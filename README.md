@@ -6,7 +6,10 @@ Trabalho da disciplina **Domain Driven Design - Java** (FIAP, Engenharia de Soft
 
 | Aluno | RM |
 | :--- | :--- |
+| Kauê de Almeida Pena | 564211 |
 | Eduardo Delorenzo Moraes | 561749 |
+| Ronaldo Aparecido Monteiro Almeida | 565017 |
+| William Queiroz | 565032 |
 
 ---
 
