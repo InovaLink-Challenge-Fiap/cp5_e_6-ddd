@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FIAP Bank - Mesa de Operações de Crédito</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --primary-color: #ed1c24;
+            --primary-dark: #b8141a;
+            --bg-dark: #0f172a;
+            --card-bg: #1e293b;
+            --border-color: #334155;
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+        }
+
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: var(--bg-dark);
+            color: var(--text-main);
+            min-height: 100vh;
+        }
+
+        .fiap-brand {
+            font-weight: 800;
+            letter-spacing: -0.5px;
+            color: #ffffff;
+        }
+
+        .fiap-brand span {
+            color: var(--primary-color);
+        }
+
+        .card-custom {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 20px;
+            width: 100%;
+            max-width: 420px;
+        }
+
+        .form-control-dark {
+            background-color: #0f172a;
+            border: 1px solid var(--border-color);
+            color: var(--text-main);
+            border-radius: 10px;
+        }
+
+        .form-control-dark:focus {
+            background-color: #0f172a;
+            color: var(--text-main);
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 0.25rem rgba(237, 28, 36, 0.25);
+        }
+
+        .subtitulo {
+            color: var(--text-muted);
+        }
+
+        .btn-entrar {
+            background-color: var(--primary-color);
+            color: #ffffff;
+            border: none;
+        }
+
+        .btn-entrar:hover {
+            background-color: var(--primary-dark);
+            color: #ffffff;
+        }
+    </style>
+</head>
+<body class="d-flex align-items-center justify-content-center p-3">
+
+    <!-- Cartão de login -->
+    <div class="card-custom p-4">
+        <!-- Marca -->
+        <div class="text-center mb-4">
+            <div class="fiap-brand fs-3">
+                <i class="fa-solid fa-university me-2 text-danger"></i>FIAP <span>BANK</span>
+            </div>
+            <h1 class="fs-6 fw-normal subtitulo mt-2 mb-0">Mesa de Operações de Crédito</h1>
+        </div>
+
+        <!-- Mensagens de erro, escolhidas pelo parâmetro erro da URL -->
+        <div th:if="${erro}" th:switch="${erro}" class="alert alert-danger rounded-3 small" role="alert">
+            <i class="fa-solid fa-triangle-exclamation me-2"></i>
+            <span th:case="'credenciais'">Usuário ou senha inválidos.</span>
+            <span th:case="'perfil'">Este usuário não tem perfil de operador ou administrador.</span>
+            <span th:case="'expirado'">Sua sessão expirou. Entre novamente.</span>
+            <span th:case="'indisponivel'">Não foi possível conectar à Plataforma de Crédito.</span>
+            <span th:case="*">Não foi possível entrar.</span>
+        </div>
+
+        <!-- Formulário de login -->
+        <form th:action="@{/login}" method="post">
+            <div class="mb-3">
+                <label for="usuario" class="form-label small fw-semibold">Usuário</label>
+                <input id="usuario" name="usuario" type="text" class="form-control form-control-dark" autocomplete="username" required autofocus>
+            </div>
+            <div class="mb-4">
+                <label for="senha" class="form-label small fw-semibold">Senha</label>
+                <input id="senha" name="senha" type="password" class="form-control form-control-dark" autocomplete="current-password" required>
+            </div>
+            <button type="submit" class="btn btn-entrar w-100 py-2 fw-bold rounded-3">Entrar</button>
+        </form>
+    </div>
+
+</body>
+</html>

@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>br.com.fiap.bank</groupId>
+        <artifactId>fiap-bank-plataforma-credito</artifactId>
+        <version>1.0.0-SNAPSHOT</version>
+        <relativePath>../pom.xml</relativePath>
+    </parent>
+
+    <artifactId>fiap-bank-plataforma-credito-presentation</artifactId>
+    <packaging>jar</packaging>
+
+    <name>FIAP Bank - Plataforma de Credito - Presentation</name>
+    <description>API REST, adaptador legado e inicializacao da Plataforma de Credito</description>
+
+    <dependencies>
+        <!-- O presentation compila so contra o application -->
+        <dependency>
+            <groupId>br.com.fiap.bank</groupId>
+            <artifactId>fiap-bank-plataforma-credito-application</artifactId>
+            <version>${project.version}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>br.com.fiap.bank</groupId>
+                    <artifactId>fiap-bank-plataforma-credito-domain</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>br.com.fiap.bank</groupId>
+                    <artifactId>fiap-bank-plataforma-credito-infrastructure</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+
+        <!-- Domain e infrastructure entram so em tempo de execucao -->
+        <dependency>
+            <groupId>br.com.fiap.bank</groupId>
+            <artifactId>fiap-bank-plataforma-credito-domain</artifactId>
+            <version>${project.version}</version>
+            <scope>runtime</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>br.com.fiap.bank</groupId>
+            <artifactId>fiap-bank-plataforma-credito-infrastructure</artifactId>
+            <version>${project.version}</version>
+            <scope>runtime</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-security</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-oauth2-resource-server</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-actuator</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-h2console</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <scope>provided</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-enforcer-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>fronteira-presentation</id>
+                        <goals>
+                            <goal>enforce</goal>
+                        </goals>
+                        <configuration>
+                            <rules>
+                                <bannedDependencies>
+                                    <searchTransitive>false</searchTransitive>
+                                    <excludes>
+                                        <exclude>br.com.fiap.bank:fiap-bank-plataforma-credito-domain:*:*:compile</exclude>
+                                        <exclude>br.com.fiap.bank:fiap-bank-plataforma-credito-infrastructure:*:*:compile</exclude>
+                                    </excludes>
+                                    <message>O modulo presentation so pode compilar contra o application</message>
+                                </bannedDependencies>
+                            </rules>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+            </plugin>
+        </plugins>
+    </build>
+
+</project>

@@ -1,0 +1,6 @@
+export const environment = {
+  production: true,
+  plataformaCreditoUrl: 'http://localhost:8081/api/credito',
+  autenticacaoUrl: 'http://localhost:8081/api/auth',
+  useRuntimeConfig: true
+};
