@@ -11,7 +11,6 @@ import br.com.fiap.bank.plataforma.domain.integracao.CoreBancarioGateway;
 import br.com.fiap.bank.plataforma.domain.integracao.CrmGateway;
 import br.com.fiap.bank.plataforma.domain.integracao.NotificacaoGateway;
 import br.com.fiap.bank.plataforma.domain.integracao.ScrGateway;
-import br.com.fiap.bank.plataforma.domain.model.ContaCliente;
 import br.com.fiap.bank.plataforma.domain.model.Cpf;
 import br.com.fiap.bank.plataforma.domain.model.ResultadoAnalise;
 import br.com.fiap.bank.plataforma.domain.model.SolicitacaoCredito;
@@ -38,15 +37,14 @@ public class SolicitacaoCreditoService {
     private final NotificacaoGateway notificacaoGateway;
     private final MotorDeCredito motorDeCredito;
 
-    // Analisa com SCR, Bureau, CRM e Core, grava e avisa o cliente; sem transacao por causa do Core
+    // Confere a conta no Core, analisa com SCR, Bureau e CRM, grava e avisa; sem transacao por causa do Core
     public SolicitacaoResponse solicitar(SolicitarCreditoRequest request) {
         Cpf cpf = new Cpf(request.cpfCliente());
+        coreBancarioGateway.consultarConta(cpf).exigirAtiva();
 
         boolean restricaoScr = scrGateway.possuiRestricoes(cpf);
         int scoreBureau = bureauGateway.consultarScore(cpf);
         boolean inadimplenciaCrm = crmGateway.possuiInadimplencia(cpf);
-        ContaCliente conta = coreBancarioGateway.consultarConta(cpf);
-        conta.exigirAtiva();
 
         ResultadoAnalise resultado = motorDeCredito.analisar(restricaoScr, scoreBureau, inadimplenciaCrm,
                 request.valorSolicitado(), request.quantidadeParcelas(), request.rendaMensal());
